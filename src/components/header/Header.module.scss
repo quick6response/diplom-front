@@ -1,0 +1,39 @@
+.header {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: #333; // Цвет фона
+	color: white; // Цвет текста
+	padding: 10px; // Внутренний отступ
+	font-size: 18px; // Размер шрифта
+	flex-direction: row;
+	text-align:center;
+}
+
+.header a {
+	text-decoration: none; // Убираем подчеркивание
+	color: inherit; // Наследуем цвет текста
+	padding: 5px 10px; // Внутренние отступы
+	transition: all 0.3s ease; // Плавное изменение стилей
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.header ul {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.header li {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+
+.header a:hover {
+	background-color: #555; // Цвет фона при наведении
+	border-radius: 5px; // Скругление углов
+	color: #ffa500; // Изменение цвета текста при наведении
+}
+
+
