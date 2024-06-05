@@ -7,15 +7,18 @@ import style from './Header.module.scss';
 const menuItems = [
   {
     href: '/',
-    title: 'Главная'
+    title: 'Главная',
+    roles: []
   },
   {
     href: '/employees',
-    title: 'Сотрудники'
+    title: 'Сотрудники',
+    roles: []
   },
   {
     href: '/education',
-    title: 'Обучение'
+    title: 'Обучение',
+    roles: ['admin']
   }
 ];
 
@@ -33,19 +36,26 @@ function UnauthenticatedHeaderLayout(props: { pathname: string }) {
   );
 }
 
-function AuthenticatedHeaderLayout(props: { pathname: string }) {
+function AuthenticatedHeaderLayout(props: {
+  pathname: string;
+  role: 'admin' | 'user';
+}) {
   return (
     <aside className={style.header}>
       <nav>
         <ul>
-          {menuItems.map(({ href, title }) => (
-            <li
-              className={`m-2 ${props.pathname === href && 'bg-fuchsia-600 text-white'} `}
-              key={href}
-            >
-              <Link href={href}>{title}</Link>
-            </li>
-          ))}
+          {menuItems
+            .filter(menu =>
+              menu.roles.length ? menu.roles.includes(props.role) : true
+            )
+            .map(({ href, title }) => (
+              <li
+                className={`m-2 ${props.pathname === href && 'bg-fuchsia-600 text-white'} `}
+                key={href}
+              >
+                <Link href={href}>{title}</Link>
+              </li>
+            ))}
         </ul>
         <ul>
           <li className={`m-4`} key={'logout'}>
@@ -58,12 +68,13 @@ function AuthenticatedHeaderLayout(props: { pathname: string }) {
 }
 
 export default function Header({
-  isAuth = false
-}: Readonly<{ isAuth?: boolean }>) {
+  isAuth = true,
+  role
+}: Readonly<{ isAuth?: boolean; role: 'admin' | 'user' }>) {
   const pathname = usePathname();
 
   return isAuth ? (
-    <AuthenticatedHeaderLayout pathname={pathname} />
+    <AuthenticatedHeaderLayout pathname={pathname} role={role} />
   ) : (
     <UnauthenticatedHeaderLayout pathname={pathname} />
   );
