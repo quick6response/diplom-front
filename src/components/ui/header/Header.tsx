@@ -1,7 +1,5 @@
-'use client';
-
+import { headers } from 'next/headers';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import style from './Header.module.scss';
 
 const menuItems = [
@@ -71,7 +69,10 @@ export default function Header({
   isAuth = true,
   role
 }: Readonly<{ isAuth?: boolean; role: 'admin' | 'user' }>) {
-  const pathname = usePathname();
+  const headerList = headers();
+  const pathname = headerList.get('x-current-path') || '';
+
+  // const pathname = usePathname();
 
   return isAuth ? (
     <AuthenticatedHeaderLayout pathname={pathname} role={role} />

@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	experimental: {
-		serverActions: {
-			allowedOrigins: [],
-		},
-	},
+	reactStrictMode: true,
+	// pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
 	
 	async headers() {
 		return [

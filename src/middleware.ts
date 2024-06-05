@@ -1,14 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const requestHeaders = new Headers(request.headers);
-  console.log('middleware', requestHeaders);
+  const headers = new Headers(request.headers);
+  // console.log('middleware', headers);
   // Store current request pathname in a custom header
-  requestHeaders.set('x-pathname', request.nextUrl.pathname);
+  headers.set('x-pathname', request.nextUrl.pathname);
+  headers.set('x-current-path', request.nextUrl.pathname);
+
+  // console.log('next middleware', headers);
 
   return NextResponse.next({
     request: {
-      headers: requestHeaders
+      headers
     }
   });
 }
