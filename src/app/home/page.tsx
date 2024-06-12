@@ -1,23 +1,12 @@
 import Loading from '@/app/home/loading';
-import Link from 'next/link';
-import { Fragment, Suspense } from 'react';
-
-const selectTabs = () => {
-  return [12, 22, 12];
-};
+import { HomeComponent } from '@/components/screen/Home/HomeComponent';
+import { Suspense } from 'react';
 
 export default function Home() {
-  const tabs = selectTabs();
-
   return (
     <section>
       <Suspense fallback={<Loading />}>
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          <div>
-            Главная страница
-            <Fragment>Статистика обучения сотрудников будут здесь</Fragment>
-          </div>
-        </main>
+        <HomeComponent educationStats={{ count: 1 }} employee={{ count: 1 }} />
       </Suspense>
     </section>
   );

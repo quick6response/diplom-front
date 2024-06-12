@@ -1,14 +1,10 @@
 import { authApi } from '@/api/auth/auth.api';
+import { AuthData } from '@/shared/auth';
 import { useMutation } from '@tanstack/react-query';
 
 export const useLogin = () => {
   return useMutation({
-    mutationFn: async ({
-      username,
-      password
-    }: {
-      username: string;
-      password: string;
-    }) => authApi.login(username, password)
+    mutationFn: async ({ login, password }: AuthData) =>
+      authApi.login(login, password)
   });
 };

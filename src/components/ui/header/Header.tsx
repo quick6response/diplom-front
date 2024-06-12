@@ -2,9 +2,9 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import style from './Header.module.scss';
 
-const menuItems = [
+const menuItems: { href: string; title: string; roles: string[] }[] = [
   {
-    href: '/',
+    href: '/home',
     title: 'Главная',
     roles: []
   },
@@ -16,7 +16,7 @@ const menuItems = [
   {
     href: '/education',
     title: 'Обучение',
-    roles: ['admin']
+    roles: []
   }
 ];
 
@@ -25,6 +25,7 @@ function UnauthenticatedHeaderLayout(props: { pathname: string }) {
     <div className={style.header}>
       <nav>
         <ul>
+          <div>Войдите в систему</div>
           <li>
             <Link href="/auth">Войти</Link>
           </li>
@@ -71,8 +72,6 @@ export default function Header({
 }: Readonly<{ isAuth?: boolean; role: 'admin' | 'user' }>) {
   const headerList = headers();
   const pathname = headerList.get('x-current-path') || '';
-
-  // const pathname = usePathname();
 
   return isAuth ? (
     <AuthenticatedHeaderLayout pathname={pathname} role={role} />
