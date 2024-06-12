@@ -1,15 +1,17 @@
 'use client';
 
-import { employeeUtils } from '@/actions/employee.utils';
 import { useGetEmployees } from '@/api/employee/hooks/useGetEmployees';
+import { GetEmployees } from '@/api/employee/type/employee.api';
+import { EmployeesTableCell } from '@/components/screen/Employees/EmployeesTableCell';
+import { IconPlus } from '@/components/ui/icon/IconPlus';
 import { Employee, EmployeeOrderBy } from '@/shared/employee';
 import {
   getSortOrderBySortDirection,
-  SortOrder,
   SortOrderByAndOrder
 } from '@/shared/sorting';
 import {
-  getKeyValue,
+  Button,
+  Pagination,
   SortDescriptor,
   Table,
   TableBody,
@@ -18,7 +20,7 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react';
-import { SortDirection } from '@react-types/shared';
+import { Spinner } from '@nextui-org/spinner';
 import { FC, useEffect, useState } from 'react';
 
 const columns = [
@@ -36,11 +38,20 @@ const columns = [
     key: 'email',
     label: 'Почта',
     allowsSorting: true
+  },
+  {
+    key: 'numberPhone',
+    label: 'Номер телефона',
+    allowsSorting: true
+  },
+  {
+    key: 'actions',
+    label: 'Действие'
   }
 ];
 
-export const EmployeesComponent: FC<{ employees: Employee[] }> = ({
-  employees
+export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
+  initialData
 }) => {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortOrderByAndOrder<Employee>>({
@@ -50,18 +61,17 @@ export const EmployeesComponent: FC<{ employees: Employee[] }> = ({
   });
   const employeesQuery = useGetEmployees(
     { page, orderBy: sort.orderBy, order: sort.order },
-    employees
+    initialData
   );
 
   useEffect(() => {
     console.log('isLoading', employeesQuery.isLoading);
-  }, [employeesQuery.isLoading]);
+  }, [employeesQuery]);
 
   const onSortChange = (descriptor: SortDescriptor) => {
     if (!descriptor.column) {
       return;
     }
-    console.log(descriptor);
     setSort({
       orderBy: descriptor.column as EmployeeOrderBy,
       order: getSortOrderBySortDirection(descriptor.direction),
@@ -71,35 +81,68 @@ export const EmployeesComponent: FC<{ employees: Employee[] }> = ({
 
   return (
     <section>
-      <Table
-        aria-label="Example table with dynamic content"
-        isStriped
-        onSortChange={onSortChange}
-        sortDescriptor={{
-          column: sort.orderBy,
-          direction: sort.direction
-        }}
-      >
-        <TableHeader columns={columns}>
-          {column => (
-            <TableColumn {...column} key={column.key}>
-              {column.label}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          items={employeesQuery.data ?? []}
-          emptyContent={'Сотрудники отсутствуют'}
-        >
-          {item => (
-            <TableRow key={item.id}>
-              {columnKey => {
-                return <TableCell>{getKeyValue(item, columnKey)}</TableCell>;
-              }}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <div>
+        <div className="ml-auto">
+          <Button color="primary" endContent={<IconPlus />}>
+            Создать сотрудника
+          </Button>
+        </div>
+        <div>
+          <Table
+            aria-label="Employees"
+            isStriped
+            onSortChange={onSortChange}
+            sortDescriptor={{
+              column: sort.orderBy,
+              direction: sort.direction
+            }}
+            bottomContent={
+              employeesQuery.data?.allPages ? (
+                <div className="flex w-full justify-center">
+                  <Pagination
+                    isCompact
+                    showControls
+                    showShadow
+                    color="secondary"
+                    page={employeesQuery.data.currentPage}
+                    total={employeesQuery.data.allPages}
+                    onChange={page => setPage(page)}
+                    isDisabled={employeesQuery.isLoading}
+                  />
+                </div>
+              ) : null
+            }
+          >
+            <TableHeader columns={columns}>
+              {column => (
+                <TableColumn {...column} key={column.key}>
+                  {column.label}
+                </TableColumn>
+              )}
+            </TableHeader>
+            <TableBody
+              items={employeesQuery.data?.data ?? []}
+              emptyContent={'Сотрудники отсутствуют'}
+              isLoading={employeesQuery.isLoading}
+              loadingContent={<Spinner label="Loading..." />}
+            >
+              {item => (
+                <TableRow key={item.id}>
+                  {columnKey => (
+                    <TableCell>
+                      <EmployeesTableCell
+                        key={`${item.id}_${columnKey}`}
+                        employee={item}
+                        column={columnKey as EmployeeOrderBy | 'actions'}
+                      />
+                    </TableCell>
+                  )}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </section>
   );
 };

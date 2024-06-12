@@ -38,10 +38,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextUIProvider>
           <TanstackProvider>
-            <Suspense fallback={<Loading />}>
-              <Header role="admin" />
-              <div>{children}</div>
-            </Suspense>
+            <Header role="admin" />
+            <div>{children}</div>
           </TanstackProvider>
         </NextUIProvider>
       </body>

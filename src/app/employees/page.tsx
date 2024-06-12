@@ -1,17 +1,20 @@
 import { EmployeeApi } from '@/api/employee/employee.api';
 import { EmployeesComponent } from '@/components/screen/Employees/EmployeesComponent';
-import { Employee } from '@/shared/employee';
+import { Spinner } from '@nextui-org/spinner';
+import { Suspense } from 'react';
 
 export default async function Page() {
   const data = await getEmployees();
   return (
     <main>
-      <EmployeesComponent employees={data} />
+      <Suspense fallback={<Spinner />}>
+        <EmployeesComponent initialData={data} />
+      </Suspense>
     </main>
   );
 }
 
-async function getEmployees(): Promise<Employee[]> {
+async function getEmployees() {
   const employeeApi = new EmployeeApi();
   return employeeApi.getEmployees({
     page: 1,

@@ -1,6 +1,7 @@
 import { EmployeeApi } from '@/api/employee/employee.api';
+import { GetEmployees } from '@/api/employee/type/employee.api';
 import { cacheQuery } from '@/config/cache.query';
-import { Employee, EmployeeOrderBy } from '@/shared/employee';
+import { EmployeeOrderBy } from '@/shared/employee';
 import { SortOrder } from '@/shared/sorting';
 import { useQuery } from '@tanstack/react-query';
 
@@ -16,9 +17,9 @@ export const useGetEmployees = (
     orderBy: EmployeeOrderBy;
     order?: SortOrder;
   },
-  initialData?: Employee[]
+  initialData?: GetEmployees
 ) => {
-  const { data, status, isLoading, isError, error } = useQuery({
+  const { data, status, isLoading, isError, error, isSuccess } = useQuery({
     queryKey: cacheQuery.employees(page, orderBy, order),
     queryFn: async () =>
       employeeApi.getEmployees({
@@ -26,8 +27,13 @@ export const useGetEmployees = (
         orderBy,
         order
       }),
-    initialData: initialData
+    initialData:
+      page === 1 && orderBy === 'id' && order === 'asc'
+        ? initialData
+        : undefined
   });
 
-  return { data, status, isLoading, isError, error };
+  console.log('useGetEmployees', status);
+
+  return { data, status, isLoading, isError, error, isSuccess };
 };
