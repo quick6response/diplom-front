@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetEmployees } from '@/api/employee/hooks/useGetEmployees';
-import { GetEmployees } from '@/api/employee/type/employee.api';
+import { GetEmployees } from '@/api/employee/type/employee';
 import { EmployeesTableCell } from '@/components/screen/Employees/EmployeesTableCell';
 import { IconPlus } from '@/components/ui/icon/IconPlus';
 import { Employee, EmployeeOrderBy } from '@/shared/employee';
@@ -97,7 +97,7 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
               direction: sort.direction
             }}
             bottomContent={
-              employeesQuery.data?.allPages ? (
+              employeesQuery.data?.allPage ? (
                 <div className="flex w-full justify-center">
                   <Pagination
                     isCompact
@@ -105,7 +105,7 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
                     showShadow
                     color="secondary"
                     page={employeesQuery.data.currentPage}
-                    total={employeesQuery.data.allPages}
+                    total={employeesQuery.data.allPage}
                     onChange={page => setPage(page)}
                     isDisabled={employeesQuery.isLoading}
                   />

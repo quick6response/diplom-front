@@ -8,5 +8,5 @@ export interface GetEmployees {
   total: number;
   currentPage: number;
   nextPage: number;
-  allPages: number;
+  allPage: number;
 }

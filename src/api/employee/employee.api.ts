@@ -1,5 +1,6 @@
-import { GetEmployees } from '@/api/employee/type/employee.api';
-import { Employee } from '@/shared/employee';
+import { GetEmployees } from '@/api/employee/type/employee';
+import { EmployeeOrderBy } from '@/shared/employee';
+import { SortOrder } from '@/shared/sorting';
 
 export class EmployeeApi {
   async getEmployees({
@@ -8,8 +9,8 @@ export class EmployeeApi {
     order
   }: {
     page?: number;
-    orderBy?: keyof Employee;
-    order?: 'asc' | 'desc';
+    orderBy?: EmployeeOrderBy;
+    order?: SortOrder;
   }): Promise<GetEmployees> {
     const data = [
       {
@@ -81,7 +82,7 @@ export class EmployeeApi {
     // });
 
     return {
-      allPages: 10,
+      allPage: 10,
       currentPage: page,
       data,
       nextPage: 2,
