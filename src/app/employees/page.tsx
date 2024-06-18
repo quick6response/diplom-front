@@ -1,5 +1,5 @@
 import { EmployeeApi } from '@/api/employee/employee.api';
-import { EmployeesComponent } from '@/components/screen/Employees/EmployeesComponent';
+import { EmployeesComponent } from '@/components/screen/Employee/EmployeesComponent';
 import { Spinner } from '@nextui-org/spinner';
 import { Suspense } from 'react';
 

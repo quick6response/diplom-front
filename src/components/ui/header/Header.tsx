@@ -48,11 +48,10 @@ function AuthenticatedHeaderLayout(props: {
               menu.roles.length ? menu.roles.includes(props.role) : true
             )
             .map(({ href, title }) => (
-              <li
-                className={`m-2 ${props.pathname === href && 'bg-fuchsia-600 text-white'} `}
-                key={href}
-              >
-                <Link href={href}>{title}</Link>
+              <li className={`m-2 $`} key={href}>
+                <Link href={href} legacyBehavior>
+                  {title}
+                </Link>
               </li>
             ))}
         </ul>

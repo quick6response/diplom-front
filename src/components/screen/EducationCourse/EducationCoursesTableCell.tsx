@@ -1,6 +1,9 @@
 'use client';
 
-import { Employee, EmployeeOrderBy } from '@/shared/employee';
+import {
+  EducationCourse,
+  EducationCourseOrderBy
+} from '@/shared/education.course';
 import { Button } from '@nextui-org/button';
 import {
   Dropdown,
@@ -11,10 +14,10 @@ import {
 import { FC } from 'react';
 import { MdOutlineSettings } from 'react-icons/md';
 
-export const EmployeesTableCell: FC<{
-  employee: Employee;
-  column: EmployeeOrderBy | 'actions';
-}> = ({ employee, column }) => {
+export const EducationCoursesTableCell: FC<{
+  item: EducationCourse;
+  column: EducationCourseOrderBy | 'actions';
+}> = ({ item, column }) => {
   if (column === 'actions') {
     return (
       <div className="relative flex justify-end items-center gap-2">
@@ -38,7 +41,7 @@ export const EmployeesTableCell: FC<{
     );
   }
 
-  const cellValue = employee[column];
+  const cellValue = item[column];
 
   if (column === 'createdAt' || column === 'updatedAt') {
     return new Date(cellValue).toLocaleString();

@@ -26,12 +26,12 @@ export const useGetEducationCourses = (
         page,
         orderBy,
         order
-      }),
-    // для SRR, чтобы было состояние загрузки после пере-запроса новых данных с фильтрами
-    initialData:
-      page === 1 && orderBy === 'id' && order === 'asc'
-        ? initialData
-        : undefined
+      })
+    // // для SRR, чтобы было состояние загрузки после пере-запроса новых данных с фильтрами
+    // initialData:
+    //   page === 1 && orderBy === 'id' && order === 'asc'
+    //     ? initialData
+    //     : undefined
   });
 
   return { data, status, isLoading, isError, error, isSuccess };

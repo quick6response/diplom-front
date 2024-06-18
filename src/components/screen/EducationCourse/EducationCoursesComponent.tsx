@@ -1,10 +1,14 @@
 'use client';
 
-import { useGetEmployees } from '@/api/employee/hooks/useGetEmployees';
-import { GetEmployees } from '@/api/employee/type/employee';
-import { EmployeesTableCell } from '@/components/screen/Employees/EmployeesTableCell';
+import { useGetEducationCourses } from '@/api/education/hooks/useGetEducationCourses';
+import { GetCourses } from '@/api/education/type/education.course';
+import { EducationCoursesTableCell } from '@/components/screen/EducationCourse/EducationCoursesTableCell';
 import { IconPlus } from '@/components/ui/icon/IconPlus';
-import { Employee, EmployeeOrderBy } from '@/shared/employee';
+import { PageHeader } from '@/components/ui/PageHeader/PageHeader';
+import {
+  EducationCourse,
+  EducationCourseOrderBy
+} from '@/shared/education.course';
 import {
   getSortOrderBySortDirection,
   SortOrderByAndOrder
@@ -21,7 +25,7 @@ import {
   TableRow
 } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/spinner';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 
 const columns = [
   {
@@ -30,50 +34,42 @@ const columns = [
     allowsSorting: true
   },
   {
-    key: 'fio',
-    label: 'ФИО',
+    key: 'code',
+    label: 'Код',
     allowsSorting: true
   },
   {
-    key: 'email',
-    label: 'Почта',
+    key: 'name',
+    label: 'Название',
     allowsSorting: true
   },
-  {
-    key: 'numberPhone',
-    label: 'Номер телефона',
-    allowsSorting: true
-  },
+
   {
     key: 'actions',
     label: 'Действие'
   }
 ];
 
-export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
+export const EducationCoursesComponent: FC<{ initialData?: GetCourses }> = ({
   initialData
 }) => {
   const [page, setPage] = useState(1);
-  const [sort, setSort] = useState<SortOrderByAndOrder<Employee>>({
+  const [sort, setSort] = useState<SortOrderByAndOrder<EducationCourse>>({
     orderBy: 'id',
     order: 'asc',
     direction: 'ascending'
   });
-  const employeesQuery = useGetEmployees(
+  const coursesQuery = useGetEducationCourses(
     { page, orderBy: sort.orderBy, order: sort.order },
     initialData
   );
-
-  useEffect(() => {
-    console.log('isLoading', employeesQuery.isLoading);
-  }, [employeesQuery]);
 
   const onSortChange = (descriptor: SortDescriptor) => {
     if (!descriptor.column) {
       return;
     }
     setSort({
-      orderBy: descriptor.column as EmployeeOrderBy,
+      orderBy: descriptor.column as EducationCourseOrderBy,
       order: getSortOrderBySortDirection(descriptor.direction),
       direction: descriptor.direction
     });
@@ -81,15 +77,16 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
 
   return (
     <section>
+      <PageHeader title="Темы обучения" />
       <div>
         <div className="ml-auto">
           <Button color="primary" endContent={<IconPlus />}>
-            Создать сотрудника
+            Создать тему обучения
           </Button>
         </div>
         <div>
           <Table
-            aria-label="Employees"
+            aria-label="Courses"
             isStriped
             onSortChange={onSortChange}
             sortDescriptor={{
@@ -97,17 +94,17 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
               direction: sort.direction
             }}
             bottomContent={
-              employeesQuery.data?.allPage ? (
+              coursesQuery.data?.allPage ? (
                 <div className="flex w-full justify-center">
                   <Pagination
                     isCompact
                     showControls
                     showShadow
                     color="secondary"
-                    page={employeesQuery.data.currentPage}
-                    total={employeesQuery.data.allPage}
+                    page={coursesQuery.data.currentPage}
+                    total={coursesQuery.data.allPage}
                     onChange={page => setPage(page)}
-                    isDisabled={employeesQuery.isLoading}
+                    isDisabled={coursesQuery.isLoading}
                   />
                 </div>
               ) : null
@@ -121,19 +118,19 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
               )}
             </TableHeader>
             <TableBody
-              items={employeesQuery.data?.data ?? []}
-              emptyContent={'Сотрудники отсутствуют'}
-              isLoading={employeesQuery.isLoading}
+              items={coursesQuery.data?.data ?? []}
+              emptyContent={'Курсы пока не созданы'}
+              isLoading={coursesQuery.isLoading}
               loadingContent={<Spinner label="Loading..." />}
             >
               {item => (
                 <TableRow key={item.id}>
                   {columnKey => (
                     <TableCell>
-                      <EmployeesTableCell
+                      <EducationCoursesTableCell
                         key={`${item.id}_${columnKey}`}
-                        employee={item}
-                        column={columnKey as EmployeeOrderBy | 'actions'}
+                        item={item}
+                        column={columnKey as 'actions' | EducationCourseOrderBy}
                       />
                     </TableCell>
                   )}
