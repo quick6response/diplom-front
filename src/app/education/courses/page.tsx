@@ -7,7 +7,10 @@ export default async function EducationCourses() {
   const initialData = await courseApi.getListCourses({
     page: 1,
     orderBy: 'id',
-    order: 'asc'
+    order: 'ASC'
   });
+
+  console.log(initialData);
+
   return <EducationCoursesComponent initialData={initialData} />;
 }

@@ -1,7 +1,10 @@
 export interface Employee {
   id: number;
-  fio: string;
+  lastName: string;
+  firstName: string;
+  middleName: string;
   email: string;
+  login: string;
   numberPhone: string;
   passportNumber: number;
   numberSerial: number;

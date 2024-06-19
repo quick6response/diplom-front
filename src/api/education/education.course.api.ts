@@ -1,6 +1,9 @@
+import { axiosInstance } from '@/api/api-instance';
 import { GetCourses } from '@/api/education/type/education.course';
+import { ResponseInterface } from '@/api/response.interface';
 import { EducationCourseOrderBy } from '@/shared/education.course';
 import { SortOrder } from '@/shared/sorting';
+import { AxiosResponse } from 'axios';
 
 export class EducationCourseApi {
   async getListCourses({
@@ -12,29 +15,31 @@ export class EducationCourseApi {
     orderBy?: EducationCourseOrderBy;
     order?: SortOrder;
   }): Promise<GetCourses> {
-    const data = [
-      {
-        id: 1,
-        code: '100',
-        name: 'Курс 1',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        id: 2,
-        code: '200',
-        name: 'Курс 2',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    ];
+    try {
+      const getCourses = await axiosInstance.get<
+        {
+          page?: number;
+          orderBy?: EducationCourseOrderBy;
+          order?: SortOrder;
+        },
+        AxiosResponse<ResponseInterface<GetCourses>>
+      >('/education-course', { params: { page, orderBy, order } });
 
-    return {
-      data,
-      total: 2,
-      currentPage: 1,
-      nextPage: 1,
-      allPage: 1
-    };
+      console.log(getCourses.data);
+
+      return getCourses.data.data;
+    } catch (error) {
+      console.error(error);
+      return {
+        allPage: 0,
+        currentPage: 0,
+        results: [],
+        nextPage: 0,
+        total: 0,
+        limit: 0,
+        offset: 0,
+        prevPage: 0
+      };
+    }
   }
 }

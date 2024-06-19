@@ -30,13 +30,23 @@ const columns = [
     allowsSorting: true
   },
   {
-    key: 'fio',
-    label: 'ФИО',
+    key: 'firstName',
+    label: 'Имя',
     allowsSorting: true
   },
   {
-    key: 'email',
-    label: 'Почта',
+    key: 'lastName',
+    label: 'Фамилия',
+    allowsSorting: true
+  },
+  {
+    key: 'middleName',
+    label: 'Отчество',
+    allowsSorting: true
+  },
+  {
+    key: 'login',
+    label: 'Логин',
     allowsSorting: true
   },
   {
@@ -56,7 +66,7 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortOrderByAndOrder<Employee>>({
     orderBy: 'id',
-    order: 'asc',
+    order: 'ASC',
     direction: 'ascending'
   });
   const employeesQuery = useGetEmployees(
@@ -97,15 +107,15 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
               direction: sort.direction
             }}
             bottomContent={
-              employeesQuery.data?.allPage ? (
+              employeesQuery.data?.prevPage ? (
                 <div className="flex w-full justify-center">
                   <Pagination
                     isCompact
                     showControls
                     showShadow
                     color="secondary"
-                    page={employeesQuery.data.currentPage}
-                    total={employeesQuery.data.allPage}
+                    page={employeesQuery.data.offset}
+                    total={employeesQuery.data.prevPage}
                     onChange={page => setPage(page)}
                     isDisabled={employeesQuery.isLoading}
                   />
@@ -121,7 +131,7 @@ export const EmployeesComponent: FC<{ initialData: GetEmployees }> = ({
               )}
             </TableHeader>
             <TableBody
-              items={employeesQuery.data?.data ?? []}
+              items={employeesQuery.data?.results ?? []}
               emptyContent={'Сотрудники отсутствуют'}
               isLoading={employeesQuery.isLoading}
               loadingContent={<Spinner label="Loading..." />}

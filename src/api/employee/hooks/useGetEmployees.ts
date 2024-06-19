@@ -29,7 +29,7 @@ export const useGetEmployees = (
       }),
     // для SRR, чтобы было состояние загрузки после пере-запроса новых данных с фильтрами
     initialData:
-      page === 1 && orderBy === 'id' && order === 'asc'
+      page === 1 && orderBy === 'id' && order === 'ASC'
         ? initialData
         : undefined
   });

@@ -6,13 +6,13 @@ export type SortOrderByAndOrder<Entry> = {
   direction?: SortDirection;
 };
 
-export type SortOrder = 'asc' | 'desc';
+export type SortOrder = 'ASC' | 'DESC';
 
 export const getSortOrderBySortDirection = (
   order?: SortDirection
 ): SortOrder => {
   if (order === 'ascending') {
-    return 'asc';
+    return 'ASC';
   }
-  return 'desc';
+  return 'DESC';
 };

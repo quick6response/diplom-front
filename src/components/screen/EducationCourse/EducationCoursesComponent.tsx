@@ -56,7 +56,7 @@ export const EducationCoursesComponent: FC<{ initialData?: GetCourses }> = ({
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortOrderByAndOrder<EducationCourse>>({
     orderBy: 'id',
-    order: 'asc',
+    order: 'ASC',
     direction: 'ascending'
   });
   const coursesQuery = useGetEducationCourses(
@@ -118,7 +118,7 @@ export const EducationCoursesComponent: FC<{ initialData?: GetCourses }> = ({
               )}
             </TableHeader>
             <TableBody
-              items={coursesQuery.data?.data ?? []}
+              items={coursesQuery.data?.results ?? []}
               emptyContent={'Курсы пока не созданы'}
               isLoading={coursesQuery.isLoading}
               loadingContent={<Spinner label="Loading..." />}

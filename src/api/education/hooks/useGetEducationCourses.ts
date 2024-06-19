@@ -4,6 +4,8 @@ import { cacheQuery } from '@/config/cache.query';
 import { EducationCourseOrderBy } from '@/shared/education.course';
 import { SortOrder } from '@/shared/sorting';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const courseApi = new EducationCourseApi();
 
@@ -34,5 +36,13 @@ export const useGetEducationCourses = (
     //     : undefined
   });
 
+  useEffect(() => {
+    if (isError) {
+      console.error(error);
+      toast(`${error}`, {
+        type: 'error'
+      });
+    }
+  }, [isError]);
   return { data, status, isLoading, isError, error, isSuccess };
 };

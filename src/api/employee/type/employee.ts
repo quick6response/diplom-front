@@ -4,9 +4,9 @@ import { Employee } from '@/shared/employee';
  * Ответ поиска сотрудников в АПИ
  */
 export interface GetEmployees {
-  data: Employee[];
+  results: Employee[];
   total: number;
-  currentPage: number;
+  offset: number;
   nextPage: number;
-  allPage: number;
+  prevPage: number;
 }
