@@ -40,6 +40,10 @@ export default function RootLayout({
         http-equiv="Content-Security-Policy"
         content="upgrade-insecure-requests"
       />
+      <meta
+        http-equiv="Content-Security-Policy"
+        content="upgrade-insecure-requests"
+      />
       <body className={inter.className}>
         <NextUIProvider>
           <TanstackProvider>

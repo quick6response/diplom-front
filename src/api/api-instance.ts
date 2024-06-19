@@ -5,8 +5,8 @@ export const apiInstance = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials: true,
-  timeout: 60 * 1000
+  timeout: 60 * 1000,
+  withCredentials: true
 });
 
 export const axiosInstance = {

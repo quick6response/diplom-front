@@ -7,7 +7,16 @@ export const authApi = {
     const auth = await axiosInstance.post<
       AuthData,
       ResponseInterface<AuthLoginResponse>
-    >('/auth/login', { login, password });
+    >(
+      '/auth/login',
+      { login, password },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        }
+      }
+    );
 
     return auth.data;
   }
