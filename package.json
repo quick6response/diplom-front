@@ -6,7 +6,9 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "api:download": "wget http://localhost:3010/api-yaml -O ./src/shared/api/schema.yaml",
+    "api:generate": "orval"
   },
   "dependencies": {
     "@nestjs/sequelize": "^10.0.1",
@@ -16,14 +18,17 @@
     "@nextui-org/theme": "^2.2.5",
     "@tanstack/react-query": "^5.40.0",
     "@tanstack/react-query-devtools": "^5.40.0",
+    "axios": "^1.7.2",
     "framer-motion": "^11.2.10",
     "mysql2": "^3.10.0",
     "nest": "^0.1.6",
     "next": "14.2.3",
+    "orval": "^6.30.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",
     "react-icons": "^5.2.1",
+    "react-toastify": "^10.0.5",
     "sass": "^1.77.4",
     "sequelize": "^6.37.3",
     "sequelize-typescript": "^2.1.6",
@@ -36,11 +41,9 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/sequelize": "^4.28.20",
-    "eslint": "^9.5.0",
     "postcss": "^8",
     "prettier": "^3.3.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.5",
-    "vercel": "^34.2.7"
+    "typescript": "^5.4.5"
   }
 }

@@ -4,34 +4,33 @@ import { useLogin } from '@/api/auth/hooks/useLogin';
 import { AuthData } from '@/shared/auth';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
+import { AxiosError } from 'axios';
 
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 export const AuthComponent: FC = () => {
   const router = useRouter();
+  const userLogin = useLogin();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
+
     formState: {
       isValid,
-      errors: { login: errorLogin, password: errorPassword }
+      errors: { login: errorLogin, password: errorPassword, root }
     }
   } = useForm<AuthData>({
-    mode: 'onChange',
-    defaultValues: {
-      login: '',
-      password: ''
-    }
+    mode: 'onChange'
   });
 
   const toggleVisibility = () => setShowPassword(prevState => !prevState);
-
-  const userLogin = useLogin();
 
   const handleLogin = async (data: AuthData) => {
     try {
@@ -45,9 +44,20 @@ export const AuthComponent: FC = () => {
         router.push('/home');
       }
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast(error.response?.data.message, {
+          type: 'error'
+        });
+        return;
+      }
+      toast('Ошибка авторизации, проверьте логин или пароль', {
+        type: 'error'
+      });
       console.error(error);
     }
   };
+
+  console.log(handleSubmit);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -60,17 +70,18 @@ export const AuthComponent: FC = () => {
             type="email"
             label="Логин"
             placeholder="Логин"
-            className="max-w-xs"
-            {...register('login', { required: true, minLength: 4 })}
+            // className="max-w-xs"
+            {...register('login', { required: true })}
           />
           <div />
           <br />
           <Input
-            isRequired
             type={showPassword ? 'text' : 'password'}
+            isRequired
+            label="Пароль"
             placeholder="Пароль"
-            autoComplete="none"
-            {...register('password', { required: true, minLength: 6 })}
+            className="max-w-xs"
+            {...register('password', { required: true })}
             endContent={
               <button
                 className="focus:outline-none"
@@ -94,7 +105,11 @@ export const AuthComponent: FC = () => {
 
           <div className="flex content-center flex-col justify-center">
             <br />
-            <Button isDisabled={!isValid} type="submit">
+            <Button
+              isDisabled={!isValid}
+              type="submit"
+              onClick={handleSubmit(handleLogin)}
+            >
               Войти
             </Button>
             {!isValid && (errorLogin || errorPassword) && (

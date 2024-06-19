@@ -1,12 +1,13 @@
-import Loading from '@/app/home/loading';
 import Header from '@/components/ui/header/Header';
 import { siteConfig } from '@/config/site';
+import { NextUIProvider } from '@nextui-org/react';
 import { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import React, { Suspense } from 'react';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import TanstackProvider from '../../providers/TanstackProvider';
-import { NextUIProvider } from '@nextui-org/react';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextUIProvider>
           <TanstackProvider>
+            <ToastContainer />
             <Header role="admin" />
             <div>{children}</div>
           </TanstackProvider>
