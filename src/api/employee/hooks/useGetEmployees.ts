@@ -4,6 +4,8 @@ import { cacheQuery } from '@/config/cache.query';
 import { EmployeeOrderBy } from '@/shared/employee';
 import { SortOrder } from '@/shared/sorting';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const employeeApi = new EmployeeApi();
 
@@ -33,6 +35,15 @@ export const useGetEmployees = (
         ? initialData
         : undefined
   });
+
+  useEffect(() => {
+    if (isError) {
+      console.error(error);
+      toast(`${error}`, {
+        type: 'error'
+      });
+    }
+  }, []);
 
   return { data, status, isLoading, isError, error, isSuccess };
 };
